@@ -1,0 +1,26 @@
+# example of application generation:    
+controller:
+  users: 
+    - index
+    - show
+  projects:
+    - index
+    
+model:
+	user:
+		name: string
+		login: string
+		password: string
+		avatar: string
+		sign: text
+		has_many: articles
+	
+	article:
+		title: string
+		body: text
+		user_id: select[user=id,name]
+		
+helper:
+	commands:
+		- call_user_name
+		- call_article_title
