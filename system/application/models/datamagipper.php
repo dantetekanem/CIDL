@@ -15,10 +15,18 @@
 		{
 			
 			// callback methods:
+			
 			var $before_create;
-			var $before_save;
 			var $after_create;
+			
+			var $before_save;
 			var $after_save;
+			
+			var $before_delete;
+			var $after_delete;
+			
+			var $before_update;
+			var $after_update;
 			
 			// callbacks has special properties:
 			# on => [create, update]
@@ -129,6 +137,7 @@
 			
 			function save($object = '', $related_field = '')
 			{
+				$is_a_update = !empty($this->id) ? true : false;
 				
 				// insert the nested attributes
 				if (!empty($object)) 
@@ -146,6 +155,15 @@
 					$_objectInsert				= '';
 				}
 				
+				// Before update
+				if (count($this->before_update) > 0 && $is_a_update) 
+				{
+					foreach ($this->before_update as $func) 
+					{
+						$this->{$func}();
+					}
+				}
+				
 				// Before save
 				if (count($this->before_save) > 0) 
 				{
@@ -156,6 +174,15 @@
 				}
 				
 				$ret = parent::save($_objectInsert, $related_field);
+				
+				// After update
+				if (count($this->after_update) > 0 && $is_a_update) 
+				{
+					foreach ($this->after_update as $func) 
+					{
+						$this->{$func}();
+					}
+				}
 				
 				// After save
 				if (count($this->after_save) > 0) 
@@ -169,6 +196,41 @@
 				return $ret;
 			}
 			
+			function delete($object = '', $related_field = '')
+			{
+				if (count($this->before_delete) > 0) 
+				{
+					foreach ($this->before_delete as $func) 
+					{
+						$this->{$func}();
+					}
+				}
+				
+				$ret = parent::delete($object, $related_field);
+				
+				if (count($this->after_delete) > 0) 
+				{
+					foreach ($this->after_delete as $func) 
+					{
+						$this->{$func}();
+					}
+				}
+				
+				return $ret;
+				
+			}
+			
+			function update_attributes($data)
+			{
+				// Mount all variables
+				$this -> _mount_all_variables($data);
+				
+				if(!empty($this->id))
+					$this -> get_by_id($this -> id);
+				
+				return $this -> save();
+			}
+			
 			function get_last()
 			{
 				$this -> order_by('id', 'desc') -> get(1);
@@ -179,6 +241,11 @@
 			{
 				$this -> order_by('id', 'asc') -> get(1);
 				return $this;
+			}
+			
+			function is_valid()
+			{
+				return $this -> validate() -> valid;
 			}
 			
 		}
