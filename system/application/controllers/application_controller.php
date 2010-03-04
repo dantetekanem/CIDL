@@ -3,7 +3,7 @@
 class ApplicationController extends Controller {
 
 
-	function __contruct()
+	function __construct()
 	{
 		parent::Controller();
 		
