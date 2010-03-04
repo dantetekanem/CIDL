@@ -11,14 +11,14 @@ class #classname#
 		function up()
 		{
 			
-			$sql[]			= #up#
+			#up#
 							
 			return $sql;
 		}
 		
 		function down()
 		{
-			$sql[]			= #down#
+			#down#
 			return $sql;	
 		}
 	}

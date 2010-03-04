@@ -377,20 +377,20 @@ was impossible to continue this generation because you didn't pass any param, ru
 		switch($_func)
 			{
 				case "create_table":
-					$__up		= "create_table('{$_into}', array(
+					$__up		= '$sql[]	= ' . "create_table('{$_into}', array(
 								  	".join(",\n\t\t\t\t\t\t\t\t\t", $_params)."
 								   ));";
-					$__down		= "remove_table('{$_into}');";
+					$__down		= '$sql[]	= ' . "remove_table('{$_into}');";
 				break;
 				
 				case "add_column":
-					$__up		= "add_column('{$_into}', array(
+					$__up		= '$sql[]	= ' . "add_column('{$_into}', array(
 								  	".join(",\n\t\t\t\t\t\t\t\t\t", $_params)."
 								   ));";
 					foreach($params as $param)
 						{
 							$p 				= explode(":", $param);
-							$__down .= "remove_column('{$_into}', '{$p[0]}');\n";
+							$__down .= '$sql[]	= ' . "remove_column('{$_into}', '{$p[0]}');\n";
 						}
 				break;
 				
@@ -399,9 +399,9 @@ was impossible to continue this generation because you didn't pass any param, ru
 					foreach($params as $param)
 						{
 							$p 				= explode(":", $param);
-							$__up .= "remove_column('{$_into}', '{$p[0]}');\n";
+							$__up .= '$sql[]	= ' . "remove_column('{$_into}', '{$p[0]}');\n";
 						}
-					$__down		= "add_column('{$_into}', array(
+					$__down		= '$sql[]	= ' . "add_column('{$_into}', array(
 								  	".join(",\n\t\t\t\t\t\t\t\t\t", $_params)."
 								   ));";
 				break;
