@@ -12,7 +12,7 @@ require APPPATH."controllers/application_controller.php";
 
 class #classname# extends ApplicationController {
 
-	function __contruct()
+	function __construct()
 	{
 		parent::Controller();	
 	}
