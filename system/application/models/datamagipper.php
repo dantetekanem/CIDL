@@ -33,7 +33,7 @@
 			# if => call a callback validation function
 			
 			// nested attributes method
-			var $accepts_nested_attributes_for; 
+			var $accepts_nested_attributes_for = array(); 
 			var $relatedObjects;
 			
 			function DataMagipper($data = array())
@@ -228,19 +228,48 @@
 				if(!empty($this->id))
 					$this -> get_by_id($this -> id);
 				
-				return $this -> save();
+				// Before update
+				if (count($this->before_update) > 0) 
+				{
+					foreach ($this->before_update as $func) 
+					{
+						$this->{$func}();
+					}
+				}
+					
+				$ret = $this -> save();
+					
+				// After update
+				if (count($this->before_update) > 0) 
+				{
+					foreach ($this->before_update as $func) 
+					{
+						$this->{$func}();
+					}
+				}
 			}
 			
-			function get_last()
+			function last()
 			{
 				$this -> order_by('id', 'desc') -> get(1);
 				return $this;
 			}
 			
-			function get_first()
+			function first()
 			{
 				$this -> order_by('id', 'asc') -> get(1);
 				return $this;
+			}
+			
+			function hook($hook)
+			{
+				$this -> get_by_hook($hook);
+				return $this;
+			}
+			
+			function all()
+			{
+				return $this -> get() -> all;
 			}
 			
 			function is_valid()
