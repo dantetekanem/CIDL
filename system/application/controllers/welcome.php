@@ -29,7 +29,7 @@ class Welcome extends Controller {
 	 **/
 	function Index()
 	{
-		echo 'load homepage...';
+		//
 	}
 
 }

@@ -44,7 +44,7 @@ $route['default_controller'] = "welcome";
 $route['scaffolding_trigger'] = "";
 
 /* cria a index do administrador */
-$route['admin']				= "admin/home";
+$route['admin']				= "admin/home";	
 
 /* End of file routes.php */
 /* Location: ./system/application/config/routes.php */

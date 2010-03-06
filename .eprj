@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>fileTriggers</key>
+        <dict>
+            <key>Inpu</key>
+            <string>system\libraries\Input.php</string>
+            <key>Router.</key>
+            <string>system\libraries\Router.php</string>
+            <key>URI</key>
+            <string>system\libraries\URI.php</string>
+            <key>ci18n</key>
+            <string>system\libraries\Ci18n.php</string>
+            <key>config.</key>
+            <string>system\libraries\Config.php</string>
+            <key>routes.p</key>
+            <string>system\application\config\routes.php</string>
+            <key>url</key>
+            <string>system\helpers\url_helper.php</string>
+            <key>url_h</key>
+            <string>system\helpers\url_helper.php</string>
+        </dict>
+    </dict>
+</plist>
