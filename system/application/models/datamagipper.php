@@ -223,7 +223,23 @@
 			function update_attributes($data)
 			{
 				// Mount all variables
-				$this -> _mount_all_variables($data);
+				if (is_array($data) && count($data) > 0) 
+				{
+					foreach ($data as $var => $value) 
+					{
+						if(is_array($value))
+							continue;
+							
+						if(in_array($var, $this->accepts_nested_attributes_for))
+							continue;
+						
+						$this -> {$var} = $value;
+					}
+				}
+				else if (is_string($data) || is_int($data))
+				{
+					$this -> id = $data;
+				}
 				
 				if(!empty($this->id))
 					$this -> get_by_id($this -> id);

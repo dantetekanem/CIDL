@@ -294,7 +294,7 @@
 			{
 				$url				= $this -> CI -> uri -> uri_string().'?'.$this->CI->input->xss_clean($_SERVER['QUERY_STRING']);
 				
-				set_cookie('store_location', $url, time()+60*60*60);
+				set_cookie('store_location_'.$this->session_prefix, $url, time()+60*60*60);
 			}
 			
 			/**
@@ -305,7 +305,7 @@
 			 **/
 			public function get_location()
 			{
-				return get_cookie('store_location');
+				return get_cookie('store_location_'.$this->session_prefix);
 			}
 			
 			/**
@@ -316,7 +316,7 @@
 			 **/
 			public function clear_location()
 			{
-				delete_cookie('store_location');
+				delete_cookie('store_location_'.$this->session_prefix);
 			}
 				
 			private function _saveLoginSession ( $user_data, $remember_login = false, $session_name = '' )
