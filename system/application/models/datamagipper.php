@@ -243,6 +243,55 @@
 				
 				if(!empty($this->id))
 					$this -> get_by_id($this -> id);
+					
+				// Accepts_nested_attributes_for
+				
+				if(count($this->accepts_nested_attributes_for) > 0)
+				{
+					foreach($this->accepts_nested_attributes_for as $attr)
+					{
+						if(is_array($data[$attr.'_attributes']) && count($data[$attr.'_attributes']) > 0)
+						{
+							// Test If Is a Multiple Relational Attributes
+							foreach($data[$attr.'_attributes'] as $key => $value)
+							{
+								if($_first)
+									continue;
+									
+								$_olddata		= array($key => $value);
+								$_first			= $value;
+								array_shift($data[$attr.'_attributes']);
+							}
+							
+							if(is_array($_first) && count($_first) > 0)
+							{
+								$data[$attr.'_attributes'] = array_merge($data[$attr.'_attributes'], $_olddata);
+								foreach($data[$attr.'_attributes'] as $k)
+								{
+									if(!empty($k['id'])) continue;
+									
+									$attrUcfirst		= ucfirst($attr);
+									${$attr} 	 		= new $attrUcfirst($k);
+									${$attr} -> save();
+									$this->relatedObjects[] = ${$attr};
+								}
+							}
+							else
+							{
+								$data[$attr.'_attributes'] = array_merge($data[$attr.'_attributes'], $_olddata);
+								
+								if($data[$attr.'_attributes']['id'] == "") {
+								
+									$attrUcfirst		= ucfirst($attr);
+									${$attr} 	 		= new $attrUcfirst($data[$attr.'_attributes']);
+									${$attr} -> save();
+									$this->relatedObjects[] = ${$attr};
+								
+								}
+							}
+						}
+					}
+				}
 				
 				// Before update
 				if (count($this->before_update) > 0) 
