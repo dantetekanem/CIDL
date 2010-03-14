@@ -98,11 +98,13 @@ if (!class_exists('Form_for'))
 				return '<input type="file" name="'.$this->form_name.'['.$field_name.']" id="'.$this->form_id.'_'.$field_name.'" '.$_vars.'/>'."\n";
 			}
 			
-			function hidden_field($field_name, $field_vars = array())
+			function hidden_field($field_name, $field_value, $field_vars = array())
 			{
 				$_vars			= $this -> __html_vars($field_vars);
 				
-				if(!empty($this -> form_object -> $field_name))
+				if(!empty($field_value))
+					$_value		= $field_value;
+				elseif(!empty($this -> form_object -> $field_name))
 					$_value		= $this -> form_object -> $field_name;
 				
 				return '<input type="hidden" name="'.$this->form_name.'['.$field_name.']'.'" id="'.$this->form_id.'_'.$field_name.'" value="'.$_value.'" '.$vars.' />'."\n";
@@ -171,9 +173,17 @@ if (!class_exists('Form_for'))
 				return '<input type="button" name="'.$this -> form_name.'['.$field_name.']'.'" id="'.$this -> form_id .'_' . $field_name .'" value="'.$field_label.'" '.$_vars.' />'."\n";
 			}
 			
-			function fields_for($field_name, $field_vars = array())
+			function fields_for($field_name, $form_object, $field_vars = array())
 			{
-				return new Form_for($this->form_name.'['.$field_name.']', $this->form_object, $field_vars, false);
+				if(!$form_object) $form_object = $this -> form_object;
+				
+				if(!empty($field_vars['index'])) {
+					$name = $this->form_name.'['.$field_name.']'.'['.$field_vars['index'].']';
+				} else {
+					$name = $this->form_name.'['.$field_name.']';
+				}
+				
+				return new Form_for($name, $form_object, $field_vars, false);
 			}
 			
 			function end()
@@ -214,9 +224,9 @@ if (!class_exists('Form_for'))
 	
 	if (!function_exists('form_for')) 
 	{
-		function form_for($form_name, $form_object, $form_vars)
+		function form_for($form_name, $form_object, $form_vars, $structure = true)
 		{
-			return new Form_for($form_name, $form_object, $form_vars);
+			return new Form_for($form_name, $form_object, $form_vars, $structure);
 		}
 	}
 
